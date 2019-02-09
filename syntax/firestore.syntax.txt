@@ -1,0 +1,28 @@
+─→ : nextgroup
+↓  : contains
+
+Service ─→ CloudFirestore ─→ Declaration
+┌───────────────────────────────────┘
+├→ Function ─→ FunctionName ─→ FunctionCall ─→ FunctionBlock
+│                                   ↓                │
+│                             FuncitionComma         │
+│        ┌───────────────────────────────────────────┘
+│        ↓
+│  @FunctionBody
+│        ↓
+│    Statement ─→ @Value ─┬→ @Op ─→ @Value
+│                         ├→ Property ─┬→ @Op ─→ @Value
+│                         │            └→ @Method
+│                         └→ Method ─→ @Op ─→ @Value
+│                              ├───────────┐
+│                              ↓           ↓
+│                          MethodCall  MethodName
+│                              ├───────────┐
+│                              ↓           ↓
+│                            Method      @Value
+│
+├→ Match
+│
+└→ Comment
+      ↓
+     Todo
