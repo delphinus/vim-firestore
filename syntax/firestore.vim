@@ -129,10 +129,10 @@ syn region firestoreMethodCall matchgroup=firestoreParens start=/(/ end=/)/ cont
 
 " Op {{{
 syn cluster firestoreOp contains=firestoreOpKeywords,firestoreOpArithmetics
-hi def link firestoreOp Operator
 
 syn keyword firestoreOpKeywords is nextgroup=firestoreType skipwhite skipnl containedin=@firestoreOp
 syn keyword firestoreOpKeywords in nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
+hi def link firestoreOpKeywords Operator
 
 syn match firestoreOpArithmetics ,[-+*/%]\|!!\|&&\|||\|[!=]==\?\|>=\|<=\|<<[<=]\?\|>>[>=]?\|[=!><|&], nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
 hi def link firestoreOpArithmetics Operator
