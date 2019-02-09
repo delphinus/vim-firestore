@@ -95,11 +95,8 @@ syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgr
 syn match firestorePath "/[-_0-9a-zA-Z]\+\>" nextgroup=firestorePath,firestorePathInterpolation contained
 hi def link firestorePath String
 
-syn match firestorePathInterpolation "/\$([-_0-9a-zA-Z]\+)"he=s+1 nextgroup=firestorePath,firestorePathInterpolation contained
-hi def link firestorePathInterpolation String
-
-syn match firestorePathVariable /\$([-_0-9a-zA-Z]\+)/ containedin=firestorePathInterpolation
-hi def link firestorePathVariable Label
+syn region firestorePathInterpolation matchgroup=firestorePathInterpolationDelimiter start="/\$(" end=")" nextgroup=firestorePath,firestorePathInterpolation contains=@firestoreExpression contained
+hi def link firestorePathInterpolationDelimiter Label
 " }}}
 
 syn match firestoreProperty /\.\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp skipwhite skipnl contained
