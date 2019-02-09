@@ -69,7 +69,7 @@ syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,fire
 syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp skipwhite skipnl contained
 hi def link firestoreVariable Identifier
 
-syn region firestoreFunctionCall matchgroup=firestoreDefinedFunction start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreProperty,@firestoreOp skipwhite skipnl contains=@firestoreExpression contained
+syn region firestoreFunctionCall matchgroup=firestoreDefinedFunction start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreDefinedFunction Identifier
 syn region firestoreFunctionCall start=/\K\k*\>(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp skipwhite skipnl contains=@firestoreExpression contained
 
@@ -92,13 +92,13 @@ syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgr
 syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression containedin=firestoreValue
 
 " path
-syn match firestorePath "/[-_0-9a-zA-Z]\+\>" nextgroup=firestorePath,firestorePathInterpolartion contained
+syn match firestorePath "/[-_0-9a-zA-Z]\+\>" nextgroup=firestorePath,firestorePathInterpolation contained
 hi def link firestorePath String
 
-syn match firestorePathInterpolartion "/\$([-_0-9a-zA-Z]\+)"he=s+1 nextgroup=firestorePath,firestorePathInterpolartion contained
-hi def link firestorePathInterpolartion String
+syn match firestorePathInterpolation "/\$([-_0-9a-zA-Z]\+)"he=s+1 nextgroup=firestorePath,firestorePathInterpolation contained
+hi def link firestorePathInterpolation String
 
-syn match firestorePathVariable /\$([-_0-9a-zA-Z]\+)/ containedin=firestorePathInterpolartion
+syn match firestorePathVariable /\$([-_0-9a-zA-Z]\+)/ containedin=firestorePathInterpolation
 hi def link firestorePathVariable Label
 " }}}
 
