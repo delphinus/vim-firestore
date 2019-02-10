@@ -61,9 +61,9 @@ hi def link firestoreIf Statement
 " }}}
 
 " Expression {{{
-syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses
+syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,firestoreOpUnary
 
-syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression
+syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp,firestoreOpUnary skipwhite skipnl contains=@firestoreExpression
 
 " Value {{{
 syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,firestoreNumber,firestorePath,firestoreString,firestoreList,firestoreType
@@ -138,6 +138,8 @@ hi def link firestoreOpArithmetics Operator
 
 syn match firestoreOpSlash +/+ nextgroup=@firestoreExpression skipwhite skipnl contained
 hi def link firestoreOpSlash Operator
+
+syn match firestoreOpUnary /!/ nextgroup=@firestoreExpression,firestoreParentheses skipwhite skipnl contained
 
 " this is used for firestorePath
 syn cluster firestorePathOp contains=firestoreOpKeywords,firestoreOpArithmetics
