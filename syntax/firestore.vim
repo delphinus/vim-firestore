@@ -31,21 +31,25 @@ hi def link firestoreStatement Statement
 " }}}
 
 " Match {{{
-syn keyword firestoreMatch match nextgroup=firestoreMatchPath skipwhite skipnl containedin=firestoreDeclaration
+syn keyword firestoreMatch match nextgroup=@firestoreMatchPath skipwhite skipnl containedin=firestoreDeclaration
 hi def link firestoreMatch Keyword
 
-syn match firestoreMatchPath +/[-0-9a-zA-Z]\+\>+ nextgroup=firestoreMatchPath,firestoreMatchPathInterpolation,firestoreMatchBlock skipwhite skipnl containedin=firestoreMatch
-hi def link firestoreMatchPath String
+syn cluster firestoreMatchPath contains=firestoreMatchPathConstant,firestoreMatchPathInterpolation
 
-syn match firestoreMatchPathInterpolation "/{[-0-9a-zA-Z]\+}"he=s+1 nextgroup=firestoreMatchPath,firestoreMatchPathInterpolation,firestoreMatchBlock skipwhite skipnl contains=firestoreMatchPathVariable containedin=firestoreMatch
+syn match firestoreMatchPathConstant +/[-0-9a-zA-Z]\+\>+ nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl containedin=firestoreMatch
+hi def link firestoreMatchPathConstant String
+
+syn match firestoreMatchPathInterpolation "/{[-0-9a-zA-Z]\+}"he=s+1 nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl contains=firestoreMatchPathVariable containedin=firestoreMatch
 hi def link firestoreMatchPathInterpolation String
 
 syn match firestoreMatchPathVariable /{[-0-9a-zA-Z]\+}/ containedin=firestoreMatchPathInterpolation keepend
 hi def link firestoreMatchPathVariable Label
 
-syn region firestoreMatchBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreMatch,firestoreFunction,firestoreAllow,firestoreComment,firestoreMatchSemicolon containedin=firestoreMatch
+syn cluster firestoreMatchBlockStatement contains=firestoreFunction,firestoreAllow,firestoreComment,firestoreMatchSemicolon
 
-syn match firestoreMatchSemicolon /;/ nextgroup=firestoreAllow,firestoreComment,firestoreFunction skipwhite skipnl contained
+syn region firestoreMatchBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreMatch,firestoreFunction,@firestoreMatchBlockStatement contained
+
+syn match firestoreMatchSemicolon /;/ nextgroup=@firestoreMatchBlockStatement skipwhite skipnl contained
 
 syn keyword firestoreAllow allow nextgroup=firestoreAccessControl skipwhite skipnl
 hi def link firestoreAllow Statement
@@ -63,17 +67,17 @@ hi def link firestoreIf Statement
 " Expression {{{
 syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,firestoreOpUnary
 
-syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp,firestoreOpUnary skipwhite skipnl contains=@firestoreExpression
+syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression
 
 " Value {{{
 syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,firestoreNumber,firestorePath,firestoreString,firestoreList,firestoreType
 
-syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,firestoreMatchSemicolon,firestoreAllow,firestoreComment skipwhite skipnl contained
+syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contained
 hi def link firestoreVariable Identifier
 
-syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,firestoreAllow,firestoreMatchSemicolon,firestoreAllow,firestoreComment skipwhite skipnl contains=@firestoreExpression contained
+syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreFunctionCallDefined Identifier
-syn region firestoreFunctionCall matchgroup=firestoreFunctionCallNormal start=/\K\k*(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,firestoreAllow,firestoreMatchSemicolon,firestoreAllow,firestoreComment skipwhite skipnl contains=@firestoreExpression contained
+syn region firestoreFunctionCall matchgroup=firestoreFunctionCallNormal start=/\K\k*(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreFunctionCallNormal Normal
 
 " integer
@@ -102,11 +106,10 @@ syn region firestorePathInterpolation nextgroup=firestorePath,firestorePathInter
 hi def link firestorePathInterpolationDelimiter Label
 " }}}
 
-syn match firestoreProperty /\.\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,firestoreMatchSemicolon,firestoreAllow,firestoreComment skipwhite skipnl contained
+syn match firestoreProperty /\.\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contained
 
 " Method {{{
-syn region firestoreMethod start=/\.\K\k*(/ end=/)/ nextgroup=firestoreMethod contains=firestoreMethodName,firestoreMethodCall containedin=firestoreFunctionBlock keepend
-syn region firestoreMethod start=/\.\K\k*(/ end=/)/ nextgroup=@firestoreOp,firestoreMatchSemicolon,firestoreAllow,firestoreComment skipwhite skipnl contains=firestoreMethodName,firestoreMethodCall containedin=firestoreFunctionBlock keepend
+syn region firestoreMethod start=/\.\K\k*(/ end=/)/ nextgroup=firestoreMethod,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=firestoreMethodName,firestoreMethodCall contained keepend
 
 " duration
 syn keyword firestoreMethodName nanos seconds containedin=firestoreMethod
