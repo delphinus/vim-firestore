@@ -1,0 +1,41 @@
+service cloud.firestore {
+  // User defined functions
+  function authed(uid) {
+    return request.auth != null && request.auth.uid == uid
+  }
+
+  // match statement
+  match /databases/{database}/documents {
+
+    // nested function
+    function data() {
+      return request.resource.data
+    }
+
+    // nested match statement
+    match /users/{document=**} {
+      // access control statement
+      allow read: if authed(uid)
+      // multi conditions
+      allow create: if authed(uid) && data().age > 0
+      // methods
+      allow update: if data().keys().hasOnly(["name", "age"])
+      // `is` `in` op
+      allow update: if name is string && name in ['foo', 'bar']
+      // `duration` as variable
+      allow update: if duration.value(10, 'ms') > data().updatedAt - data().createdAt
+      // special values
+      allow update: if data().foo > NaN || data.foo() > ∞
+      // slicing
+      allow update: if foo()[3:5].matches('foobat') === false
+      // special functions
+      allow update: if bool('true') === true
+      // path expression
+      allow update: if resource['__name__'] === /databases/(default)/path/to/$(user.foo)
+      // path binding
+      allow update: if (/path/$(foo)/$(bar)).bind({'foo': 'bar', 'bar': 'foo'})
+    }
+  }
+}
+
+// vim:se ft=firestore:
