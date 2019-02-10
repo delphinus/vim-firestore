@@ -77,7 +77,7 @@ hi def link firestoreVariable Identifier
 
 syn region firestoreFunctionCall matchgroup=firestoreFunctionCallNormal start=/\K\k*(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreFunctionCallNormal Normal
-syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
+syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreFunctionCallDefined Identifier
 
 " integer
