@@ -70,7 +70,7 @@ syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,fi
 syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression
 
 " Value {{{
-syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,firestoreNumber,@firestorePath,firestoreString,firestoreList
+syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,@firestoreNumber,@firestorePath,firestoreString,firestoreList
 
 syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contained
 hi def link firestoreVariable Identifier
@@ -80,12 +80,21 @@ hi def link firestoreFunctionCallNormal Normal
 syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreFunctionCallDefined Identifier
 
+" number
+syn cluster firestoreNumber contains=firestoreNumberInteger,firestoreNumberFloat,firestoreNumberKeywords
+
 " integer
-syn match firestoreNumber /\v-?\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreValue
+syn match firestoreNumberInteger /\v-?\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreValue
+hi def link firestoreNumberInteger Number
 " float
-syn match firestoreNumber /\v-?\d+\.\d*/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
-syn match firestoreNumber /\v-?\.\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
-hi def link firestoreNumber Number
+syn match firestoreNumberFloat /\v-?\d+\.\d*/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
+syn match firestoreNumberFloat /\v-?\.\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
+hi def link firestoreNumberInteger Number
+
+" special values
+syn keyword firestoreNumberKeywords NaN ∞ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
+syn match firestoreNumberKeywords /∞/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
+hi def link firestoreNumberKeywords Keyword
 
 " string
 syn region firestoreString start=/\z(['"]\)/ skip=/\\\z1/ end=/\z1/ nextgroup=firestoreMethod,@firestoreOp skipwhite skipnl contains=firestoreEscapedCharacter containedin=firestoreValue
