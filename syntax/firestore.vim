@@ -86,11 +86,11 @@ syn region firestoreSlice matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextg
 syn cluster firestoreNumber contains=firestoreNumberInteger,firestoreNumberFloat
 
 " integer
-syn match firestoreNumberInteger /\v-?\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreValue
+syn match firestoreNumberInteger /\v-?\d+/ nextgroup=@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl containedin=firestoreValue
 hi def link firestoreNumberInteger Number
 " float
-syn match firestoreNumberFloat /\v-?\d+\.\d*/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
-syn match firestoreNumberFloat /\v-?\.\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
+syn match firestoreNumberFloat /\v-?\d+\.\d*/ nextgroup=@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl containedin=firestoreNumber
+syn match firestoreNumberFloat /\v-?\.\d+/ nextgroup=@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl containedin=firestoreNumber
 hi def link firestoreNumberInteger Number
 
 " string
@@ -122,8 +122,8 @@ syn region firestorePathInterpolation matchgroup=firestorePathInterpolationDelim
 hi def link firestorePathInterpolationDelimiter Label
 
 " special values
-syn keyword firestoreValueKeywords NaN true false null nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreValue
-syn match firestoreValueKeywords /∞/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreValue
+syn keyword firestoreValueKeywords NaN true false null nextgroup=@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl containedin=firestoreValue
+syn match firestoreValueKeywords /∞/ nextgroup=@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl containedin=firestoreValue
 hi def link firestoreValueKeywords Keyword
 
 " }}}
