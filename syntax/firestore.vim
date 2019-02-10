@@ -75,10 +75,10 @@ syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,fire
 syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contained
 hi def link firestoreVariable Identifier
 
-syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
-hi def link firestoreFunctionCallDefined Identifier
 syn region firestoreFunctionCall matchgroup=firestoreFunctionCallNormal start=/\K\k*(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestoreFunctionCallNormal Normal
+syn region firestoreFunctionCall matchgroup=firestoreFunctionCallDefined start=/\(exists\|get\|getAfter\)(/rs=e-1 end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression contained
+hi def link firestoreFunctionCallDefined Identifier
 
 " integer
 syn match firestoreNumber /\v-?\d+/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreValue
