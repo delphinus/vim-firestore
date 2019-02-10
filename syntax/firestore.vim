@@ -67,7 +67,7 @@ hi def link firestoreIf Statement
 " Expression {{{
 syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,firestoreOpUnary
 
-syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression
+syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement,firestoreSlice skipwhite skipnl contains=@firestoreExpression
 
 " Value {{{
 syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,@firestoreNumber,@firestorePath,firestoreString,firestoreList,firestoreValueKeywords
@@ -102,7 +102,7 @@ hi def link firestoreEscapedCharacter SpecialChar
 
 " list
 syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=firestoreMethod contains=@firestoreExpression containedin=firestoreValue
-syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression containedin=firestoreValue
+syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression containedin=firestoreValue
 
 " path
 syn cluster firestorePath contains=firestorePathConstant,firestorePathDefault,firestorePathInterpolation
