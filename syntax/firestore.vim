@@ -34,7 +34,7 @@ hi def link firestoreStatement Statement
 syn keyword firestoreMatch match nextgroup=@firestoreMatchPath skipwhite skipnl containedin=firestoreDeclaration
 hi def link firestoreMatch Keyword
 
-syn cluster firestoreMatchPath contains=firestoreMatchPathConstant,firestoreMatchPathInterpolation
+syn cluster firestoreMatchPath contains=firestoreMatchPathConstant,firestoreMatchPathInterpolation,firestoreMatchPathDocumentAll
 
 syn match firestoreMatchPathConstant +/[-0-9a-zA-Z]\+\>+ nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl containedin=firestoreMatch
 hi def link firestoreMatchPathConstant String
@@ -44,6 +44,12 @@ hi def link firestoreMatchPathInterpolation String
 
 syn match firestoreMatchPathVariable /{[-0-9a-zA-Z]\+}/ containedin=firestoreMatchPathInterpolation keepend
 hi def link firestoreMatchPathVariable Label
+
+syn match firestoreMatchPathDocumentAll "/{document=\*\*}" nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl contains=firestoreMatchPathDocumentAllInternal containedin=firestoreMatch
+hi def link firestoreMatchPathDocumentAll String
+
+syn match firestoreMatchPathDocumentAllInternal /{document=\*\*}/ containedin=firestoreMatchPathDocumentAll keepend
+hi def link firestoreMatchPathDocumentAllInternal Label
 
 syn cluster firestoreMatchBlockStatement contains=firestoreFunction,firestoreAllow,firestoreComment,firestoreMatchSemicolon
 
