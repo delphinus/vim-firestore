@@ -92,10 +92,10 @@ syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgr
 syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression containedin=firestoreValue
 
 " path
-syn match firestorePath "/[-_0-9a-zA-Z]\+\>" nextgroup=firestorePath,firestorePathInterpolation contained
+syn match firestorePath "/[-_0-9a-zA-Z]\+\>" nextgroup=firestorePath,firestorePathInterpolation,@firestorePathOp contained
 hi def link firestorePath String
 
-syn region firestorePathInterpolation matchgroup=firestorePathInterpolationDelimiter start="/\$(" end=")" nextgroup=firestorePath,firestorePathInterpolation contains=@firestoreExpression contained
+syn region firestorePathInterpolation matchgroup=firestorePathInterpolationDelimiter start="/\$(" end=")" nextgroup=firestorePath,firestorePathInterpolation,@firestoreOpExceptSlash contains=@firestoreExpression contained
 hi def link firestorePathInterpolationDelimiter Label
 " }}}
 
@@ -125,14 +125,20 @@ syn region firestoreMethodCall matchgroup=firestoreParens start=/(/ end=/)/ cont
 " }}}
 
 " Op {{{
-syn cluster firestoreOp contains=firestoreOpKeywords,firestoreOpArithmetics
+syn cluster firestoreOp contains=firestoreOpKeywords,firestoreOpArithmetics,firestoreOpSlash
 
 syn keyword firestoreOpKeywords is nextgroup=firestoreType skipwhite skipnl containedin=@firestoreOp
 syn keyword firestoreOpKeywords in nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
 hi def link firestoreOpKeywords Operator
 
-syn match firestoreOpArithmetics ,[-+*/%]\|!!\|&&\|||\|[!=]==\?\|>=\|<=\|<<[<=]\?\|>>[>=]?\|[=!><|&], nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
+syn match firestoreOpArithmetics ,[-+*%]\|!!\|&&\|||\|[!=]==\?\|>=\|<=\|<<[<=]\?\|>>[>=]?\|[=!><|&], nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
 hi def link firestoreOpArithmetics Operator
+
+syn match firestoreOpSlash +/+ nextgroup=@firestoreExpression skipwhite skipnl contained
+hi def link firestoreOpSlash Operator
+
+" this is used for firestorePath
+syn cluster firestorePathOp contains=firestoreOpKeywords,firestoreOpArithmetics
 " }}}
 
 syn keyword firestoreType bool duration float integer latlng list map number path string timestamp nextgroup=@firestoreOp skipwhite skipnl contained
