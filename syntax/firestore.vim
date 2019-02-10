@@ -94,7 +94,7 @@ syn match firestoreNumberFloat /\v-?\.\d+/ nextgroup=@firestoreOp skipwhite skip
 hi def link firestoreNumberInteger Number
 
 " special values
-syn keyword firestoreNumberKeywords NaN ∞ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
+syn keyword firestoreNumberKeywords NaN true false nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
 syn match firestoreNumberKeywords /∞/ nextgroup=@firestoreOp skipwhite skipnl containedin=firestoreNumber
 hi def link firestoreNumberKeywords Keyword
 
