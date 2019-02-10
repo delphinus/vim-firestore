@@ -109,7 +109,7 @@ hi def link firestorePathInterpolationDelimiter Label
 syn match firestoreProperty /\.\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contained
 
 " Method {{{
-syn region firestoreMethod start=/\.\K\k*(/ end=/)/ nextgroup=firestoreMethod,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=firestoreMethodName,firestoreMethodCall contained keepend
+syn region firestoreMethod start=/\.\K\k*(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=firestoreMethodName,firestoreMethodCall contained keepend
 
 " duration
 syn keyword firestoreMethodName nanos seconds containedin=firestoreMethod
