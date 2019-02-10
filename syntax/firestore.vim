@@ -110,10 +110,18 @@ syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgr
 syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression containedin=firestoreValue
 
 " path
-syn cluster firestorePath contains=firestorePathConstant,firestorePathInterpolation
+syn cluster firestorePath contains=firestorePathConstant,firestorePathDefault,firestorePathInterpolation
 
 syn match firestorePathConstant "/[-_0-9a-zA-Z]\+\>" nextgroup=@firestorePath,@firestorePathOp skipwhite skipnl contained
 hi def link firestorePathConstant String
+
+syn match firestorePathDefault "/(default)" nextgroup=@firestorePath,@firestorePathOp skipwhite skipnl contains=firestorePathDefaultParens,firestorePathDefaultKeywords contained
+
+syn match firestorePathDefaultParens "/(\|)" containedin=firestorePathDefault
+hi def link firestorePathDefaultParens String
+
+syn keyword firestorePathDefaultKeywords default containedin=firestorePathDefault
+hi def link firestorePathDefaultKeywords Identifier
 
 syn region firestorePathInterpolation matchgroup=firestorePathInterpolationDelimiter start="/\$(" end=")" nextgroup=@firestorePath,@firestorePathOp skipwhite skipnl contains=@firestoreExpression contained
 hi def link firestorePathInterpolationDelimiter Label
