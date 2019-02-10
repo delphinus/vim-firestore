@@ -70,7 +70,7 @@ syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,fi
 syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement,firestoreSlice skipwhite skipnl contains=@firestoreExpression
 
 " Value {{{
-syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,@firestoreNumber,@firestorePath,firestoreString,firestoreList,firestoreValueKeywords
+syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,@firestoreNumber,@firestorePath,firestoreString,firestoreList,firestoreMap,firestoreValueKeywords
 
 syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement,firestoreSlice skipwhite skipnl contained
 hi def link firestoreVariable Identifier
@@ -103,6 +103,9 @@ hi def link firestoreEscapedCharacter SpecialChar
 " list
 syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=firestoreMethod contains=@firestoreExpression containedin=firestoreValue
 syn region firestoreList matchgroup=firestoreBrackets start=/\[/ end=/\]/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression containedin=firestoreValue
+
+" map
+syn region firestoreMap matchgroup=firestoreBraces start=/{/ end=/}/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contains=@firestoreExpression,firestoreOpUnary containedin=firestoreValue
 
 " path
 syn cluster firestorePath contains=firestorePathConstant,firestorePathDefault,firestorePathInterpolation
