@@ -70,7 +70,7 @@ syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,fi
 syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreOp skipwhite skipnl contains=@firestoreExpression
 
 " Value {{{
-syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,firestoreNumber,@firestorePath,firestoreString,firestoreList,firestoreType
+syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,firestoreNumber,@firestorePath,firestoreString,firestoreList
 
 syn match firestoreVariable /\K\k*\>\((\)\@!/ nextgroup=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement skipwhite skipnl contained
 hi def link firestoreVariable Identifier
