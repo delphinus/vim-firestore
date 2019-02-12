@@ -187,7 +187,7 @@ hi def link firestoreType Type
 " }}}
 
 " Comment {{{
-syn match firestoreComment +//.*+ contains=@Spell,firestoreTodo
+syn match firestoreComment +//.*+ nextgroup=@firestoreValue,firestoreParentheses,firestoreOpUnary,@firestoreMatchBlockStatement,@firestoreOp skipwhite skipnl contains=@Spell,firestoreTodo
 hi def link firestoreComment Comment
 
 syn keyword firestoreTodo TODO FIXME XXX BUG containedin=firestoreComment
