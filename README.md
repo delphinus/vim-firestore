@@ -17,6 +17,12 @@ set runtimepath+=/path/to/repo
 
 Or you can use any plugin manager.
 
+## Configuration
+
+* `g:vim_firestore_warnings` (default: `1`)  
+  This syntax can highlight syntax errors with the `Error` group.  You can disable this to set `let g:vim_firestore_warnings = 0` in vimrc.  
+  <img width="247" alt="2019-02-13 17 55 40" src="https://user-images.githubusercontent.com/1239245/52699234-a3cb2c00-2fb8-11e9-9c42-6ea04bcaf5e6.png">
+
 ## Screenshots
 
 ### [Nord](https://github.com/arcticicestudio/nord-vim)
