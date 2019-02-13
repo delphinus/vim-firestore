@@ -2,6 +2,15 @@ if exists('b:current_syntax')
   finish
 endif
 
+let s:vim_firestore_warnings = get(g:, 'vim_firestore_warnings', 1)
+
+if s:vim_firestore_warnings
+  " Theses error regexp are derived from syntax/json.vim
+  syn cluster firestoreSyntaxError contains=firestoreUnknownStatement,firestoreTripleQuotesError
+  syn match firestoreUnknownStatement /\<[[:alpha:]][[:alnum:]]*\>/
+  syn match firestoreTripleQuotesError /\%("""\|'''\)/
+endif
+
 " Global {{{
 syntax match firestoreService /\%^\_s*service/ nextgroup=firestoreCloudFirestore skipwhite skipnl
 hi def link firestoreService Statement
@@ -9,7 +18,7 @@ hi def link firestoreService Statement
 syntax match firestoreCloudFirestore +cloud\.firestore+ nextgroup=firestoreDeclaration skipwhite skipnl
 hi def link firestoreCloudFirestore Keyword
 
-syn region firestoreDeclaration matchgroup=firestoreBraces start=/{/ end=/}\_s*\%$/ contains=firestoreFunction,firestoreMatch,firestoreComment
+syn region firestoreDeclaration matchgroup=firestoreBraces start=/{/ end=/}\_s*\%$/ contains=firestoreFunction,firestoreMatch,firestoreComment,@firestoreSyntaxError
 " }}}
 
 " Function {{{
@@ -24,7 +33,7 @@ hi def link firestoreFunctionCallSignature PreProc
 
 syn match firestoreFunctionComma /,/ containedin=firestoreFunctionCallSignature
 
-syn region firestoreFunctionBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreStatement containedin=firestoreFunction keepend
+syn region firestoreFunctionBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreStatement,@firestoreSyntaxError containedin=firestoreFunction keepend
 
 syn keyword firestoreStatement return nextgroup=@firestoreExpression skipwhite skipnl containedin=firestoreFunctionBody
 hi def link firestoreStatement Statement
@@ -53,7 +62,7 @@ hi def link firestoreMatchPathDocumentAllInternal Label
 
 syn cluster firestoreMatchBlockStatement contains=firestoreFunction,firestoreAllow,firestoreComment,firestoreMatchSemicolon
 
-syn region firestoreMatchBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreMatch,firestoreFunction,@firestoreMatchBlockStatement contained
+syn region firestoreMatchBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreMatch,firestoreFunction,@firestoreMatchBlockStatement,@firestoreSyntaxError contained
 
 syn match firestoreMatchSemicolon /;/ nextgroup=@firestoreMatchBlockStatement skipwhite skipnl contained
 
@@ -197,6 +206,11 @@ hi def link firestoreTodo Todo
 hi def link firestoreParens Normal
 hi def link firestoreBraces Function
 hi def link firestoreBrackets Function
+
+if s:vim_firestore_warnings
+  hi def link firestoreUnknownStatement Error
+  hi def link firestoreTripleQuotesError Error
+endif
 
 let b:current_syntax = 'firestore'
 
