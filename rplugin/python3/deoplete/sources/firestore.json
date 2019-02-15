@@ -190,6 +190,34 @@
     ]
   },
   "types": {
+    "firestore": [
+      {
+        "word": "path(",
+        "abbr": "path",
+        "menu": "(func) path(string) -> path",
+        "info": "Converts a string argument to a path."
+      },
+      {
+        "word": "exists(",
+        "abbr": "exists",
+        "menu": "(func) exists(path) -> bool",
+        "info": "Check if a document exists. `exists()` takes a path and returns a bool, indicating whether a document exists at that path. The path provided must begin with `/databases/$(database)/documents`."
+      },
+      {
+        "word": "get(",
+        "abbr": "get",
+        "menu": "(func) get(path) -> resource",
+        "info": "Get the contents of a firestore document. `get()` takes a path and returns the resource at that path. Like `exists()`, the path provided must begin with `/databases/$(database)/documents`.",
+        "_type": "resource"
+      },
+      {
+        "word": "getAfter(",
+        "abbr": "getAfter",
+        "menu": "(func) getAfter(path) -> resource",
+        "info": "Get the projected contents of a document. The document is returned as if the current request had succeeded. Useful for validating documents that are part of a batched write or transaction.",
+        "_type": "resource"
+      }
+    ],
     "string": [
       {
         "word": "size(",
@@ -354,6 +382,15 @@
         "menu": "(method) values() -> list",
         "info": "A list of all values in the map, in key order.",
         "_type": "list"
+      }
+    ],
+    "resource": [
+      {
+        "word": "data",
+        "abbr": "data",
+        "menu": "(prop) data (map)",
+        "info": "Developer provided data is surfaced in request.resource.data, which is a map containing the fields and values.",
+        "_type": "map"
       }
     ]
   }
