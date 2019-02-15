@@ -43,15 +43,28 @@ class Source(Base):
         )
 
     def _search_candidates(self, context):
+        allow_match = re.search(r"allow\s+([a-z\s,]*)$", context["input"])
+        if allow_match:
+            (candidates, input_str) = self._access_control_candidates(
+                context, allow_match.group(1)
+            )
+            debug(self.vim, ("f4", candidates))
+            if candidates:
+                return (candidates, input_str)
         method_match = re.search(r".+\.\w*$", context["input"])
         if method_match:
-            return self._method_candidates(context, method_match.group(0))
+            (candidates, input_str) = self._method_candidates(
+                context, method_match.group(0)
+            )
+            if candidates:
+                return (candidates, input_str)
         global_match = re.search(r"[^.]\b([a-zA-Z]*)$", context["input"])
         if global_match:
-            return self._top_candidates(context, global_match.group(1))
-        allow_match = re.search(r"allow\s[a-z\s,]*$", context["input"])
-        if allow_match:
-            return self._access_control_candidates(context, allow_match.group(0))
+            (candidates, input_str) = self._top_candidates(
+                context, global_match.group(1)
+            )
+            if candidates:
+                return (candidates, input_str)
         return ([], "")
 
     def _top_candidates(self, context, matched):
@@ -111,8 +124,9 @@ class Source(Base):
         return []
 
     def _access_control_candidates(self, context, matched):
+        debug(self.vim, ("f2", matched))
         if matched == "":
-            return self.__access_controls
+            return (self.__access_controls, "")
         words = re.sub(r"\s+", "", matched).split(",")
         last_word = words[-1]
         word_set = set(words)
@@ -128,11 +142,18 @@ class Source(Base):
             return a
 
         selected = reduce(gather, self.__access_controls, set())
+        debug(self.vim, ("f3", last_word, selected))
         if last_word == "":
-            return [x for x in self.__access_controls if x["word"] not in selected]
-        return [
-            x
-            for x in self.__access_controls
-            if x["word"] == last_word
-            or (x["word"].startswith(last_word) and x["word"] not in selected)
-        ]
+            return (
+                [x for x in self.__access_controls if x["word"] not in selected],
+                last_word,
+            )
+        return (
+            [
+                x
+                for x in self.__access_controls
+                if x["word"] == last_word
+                or (x["word"].startswith(last_word) and x["word"] not in selected)
+            ],
+            last_word,
+        )
