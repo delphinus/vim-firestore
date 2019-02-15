@@ -43,7 +43,7 @@ class Source(Base):
         )
 
     def _search_candidates(self, context):
-        method_match = re.search(r"[\[\]\w\(\)\{\}'\".]+\.\w*$", context["input"])
+        method_match = re.search(r".+\.\w*$", context["input"])
         if method_match:
             return self._method_candidates(context, method_match.group(0))
         global_match = re.search(r"[^.]\b([a-zA-Z]*)$", context["input"])
