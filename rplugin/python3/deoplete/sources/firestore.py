@@ -1,15 +1,20 @@
 import re
 import subprocess
 
-from deoplete.util import debug
 from .base import Base
+from deoplete.util import debug
 from functools import reduce
-from pathlib import Path
 from json import load
+from pathlib import Path
+from typing import Any, Dict, List, Set, Tuple, Union, cast
+import pynvim
+
+CANDIDATE = Dict[str, str]
+CANDIDATES = List[CANDIDATE]
 
 
 class Source(Base):
-    def __init__(self, vim):
+    def __init__(self, vim: pynvim.Nvim) -> None:
         Base.__init__(self, vim)
 
         self.name = "firestore"
@@ -18,23 +23,25 @@ class Source(Base):
         self.input_pattern = r"(?: [peg]\w*|[]\w\)\}'\"]+\.\w*|allow\s[a-z\s,]*)$"
         self.rank = 500
 
-    def on_init(self, context):
+    def on_init(self, context: Any) -> None:
         setting = Path(__file__).parent / "firestore.json"
         with setting.open() as f:
             loaded = load(f)
-            self.__access_controls = loaded["access_controls"]
-            self.__globals = loaded["globals"]
-            self.__methods = loaded["methods"]
-            self.__types = loaded["types"]
+            self.__access_controls: CANDIDATES = loaded["access_controls"]
+            self.__globals: CANDIDATES = loaded["globals"]
+            self.__methods: Dict[str, CANDIDATES] = loaded["methods"]
+            self.__types: Dict[str, CANDIDATES] = loaded["types"]
             self.__all_types_methods = reduce(
-                lambda a, b: a + self.__types[b], self.__types.keys(), []
+                lambda a, b: a + self.__types[b],
+                self.__types.keys(),
+                cast(CANDIDATES, []),
             )
 
-    def get_complete_position(self, context):
+    def get_complete_position(self, context: Any) -> int:
         m = re.search(r"\w*$", context["input"])
         return m.start() if m else -1
 
-    def gather_candidates(self, context):
+    def gather_candidates(self, context: Any) -> CANDIDATES:
         (candidates, input_str) = self._search_candidates(context)
         return (
             candidates
@@ -42,7 +49,7 @@ class Source(Base):
             else [x for x in candidates if x["word"].startswith(input_str)]
         )
 
-    def _search_candidates(self, context):
+    def _search_candidates(self, context: Any) -> Tuple[CANDIDATES, str]:
         allow_match = re.search(r"allow\s+([a-z\s,]*)$", context["input"])
         if allow_match:
             (candidates, input_str) = self._access_control_candidates(
@@ -67,10 +74,10 @@ class Source(Base):
                 return (candidates, input_str)
         return ([], "")
 
-    def _top_candidates(self, context, matched):
+    def _top_candidates(self, context: Any, matched: str) -> Tuple[CANDIDATES, str]:
         return (self.__globals, matched)
 
-    def _method_candidates(self, context, matched):
+    def _method_candidates(self, context: Any, matched: str) -> Tuple[CANDIDATES, str]:
         (var, input_str) = matched.rsplit(".", 1)
         properties = self.__methods.get(var, None)
         if properties:
@@ -84,7 +91,7 @@ class Source(Base):
             return (self._parent_methods(context, var), input_str)
         return ([], "")
 
-    def _func_return_value_methods(self, context, var):
+    def _func_return_value_methods(self, context: Any, var: str) -> CANDIDATES:
         if len(var) < 2:
             return []
         func_name = ""
@@ -111,7 +118,7 @@ class Source(Base):
             return self.__types[return_type]
         return []
 
-    def _parent_methods(self, context, var):
+    def _parent_methods(self, context: Any, var: str) -> CANDIDATES:
         (parent, name) = var.rsplit(".", 1)
         parent_properties = self.__methods.get(parent, None)
         if not parent_properties:
@@ -123,7 +130,9 @@ class Source(Base):
                 return self.__types[prop_type]
         return []
 
-    def _access_control_candidates(self, context, matched):
+    def _access_control_candidates(
+        self, context: Any, matched: str
+    ) -> Tuple[CANDIDATES, str]:
         debug(self.vim, ("f2", matched))
         if matched == "":
             return (self.__access_controls, "")
@@ -131,7 +140,7 @@ class Source(Base):
         last_word = words[-1]
         word_set = set(words)
 
-        def gather(a, b):
+        def gather(a: Set[str], b: CANDIDATE) -> Set[str]:
             word = b["word"]
             include_set = set(b.get("_include", []))
             if word in word_set:
@@ -141,7 +150,7 @@ class Source(Base):
                 a.add(word)
             return a
 
-        selected = reduce(gather, self.__access_controls, set())
+        selected = reduce(gather, self.__access_controls, cast(Set[str], set()))
         debug(self.vim, ("f3", last_word, selected))
         if last_word == "":
             return (
