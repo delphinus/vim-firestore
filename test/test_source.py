@@ -1,11 +1,9 @@
 import pynvim
-from os.path import isfile
+from os.path import dirname, isfile, join
 from os import unlink
 import sys
 
-sys.path.append("./rplugin/python3/deoplete/sources")
-
-from deoplete_firestore import Source
+from sources.firestore import Source
 
 
 def test_hoge(vim: pynvim.Nvim) -> None:
