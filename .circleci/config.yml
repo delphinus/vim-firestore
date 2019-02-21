@@ -49,8 +49,11 @@ jobs:
           command: |
             . venv/bin/activate
             git clone https://github.com/Shougo/deoplete.nvim
-            pytest --junitxml=test-reports/junit.xml
+            pytest --junitxml=test-results/pytest/results.xml
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: test-results
+          destination: test-results
+
+      - store_test_results:
+          path: test-results
