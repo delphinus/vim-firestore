@@ -49,6 +49,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            cp test/base.py rplugin/python3/deoplete/sources
             pytest --junitxml=test-results/pytest/results.xml
 
       - store_artifacts:
