@@ -14,17 +14,24 @@ def source(vim: pynvim.Nvim) -> Source:
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        ("allow", {}),
-        ("allow ", {"read", "write", "get", "list", "create", "update"}),
-        ("allow r", {"read", "write", "get", "list", "create", "update"}),
-        ("allow read", set([])),
-        ("allow read,", {"write", "create", "update"}),
-        ("allow read,c", {"write", "create", "update"}),
-        ("allow read,create", set([])),
-        ("allow read,create,", {"update"}),
-        ("allow read,create,update", set([])),
+        # access controls
+        ("allow", {"exists(", "get(", "getAfter(", "math", "path(", "request"}),
+        ("allow ", {"read", "write", "get", "list", "create", "update", "delete"}),
+        ("allow r", {"read", "write", "get", "list", "create", "update", "delete"}),
+        ("allow read", {"write", "create", "update", "delete"}),
+        ("allow read,", {"write", "create", "update", "delete"}),
+        ("allow read,c", {"write", "create", "update", "delete"}),
+        ("allow read,create", {"write", "update", "delete"}),
+        ("allow read,create,", {"write", "update", "delete"}),
+        ("allow read,create,update", {"write", "delete"}),
+        ("allow read,create,update,", {"write", "delete"}),
+        ("allow read,create,update,delete", set([])),
+        # globals
+        ("if ", set([])),
+        ("if a", {"exists(", "get(", "getAfter(", "math", "path(", "request"}),
+        ("if get(", set([])),
     ],
 )
 def test_candidates(source: Source, input_str: str, expected: Set[str]) -> None:
     candidates = source.gather_candidates({"input": input_str})
-    assert [x["word"] for x in candidates], expected
+    assert set([x["word"] for x in candidates]) == expected

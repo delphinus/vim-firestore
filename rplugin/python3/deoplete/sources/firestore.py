@@ -44,10 +44,7 @@ class Source(Base):
     def gather_candidates(self, context: Any) -> CANDIDATES:
         allow_match = re.search(r"allow\s+([a-z\s,]*)$", context["input"])
         if allow_match:
-            candidates = self._access_control_candidates(context, allow_match.group(1))
-            debug(self.vim, ("f4", candidates))
-            if candidates:
-                return candidates
+            return self._access_control_candidates(context, allow_match.group(1))
         method_match = re.search(r".+\.\w*$", context["input"])
         if method_match:
             candidates = self._method_candidates(context, method_match.group(0))
