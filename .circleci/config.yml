@@ -48,6 +48,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            git clone https://github.com/Shougo/deoplete.nvim
             python -m pytest
 
       - store_artifacts:
