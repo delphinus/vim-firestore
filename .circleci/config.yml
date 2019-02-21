@@ -33,6 +33,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            git clone https://github.com/Shougo/deoplete.nvim
 
       - save_cache:
           paths:
@@ -48,7 +49,6 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            git clone https://github.com/Shougo/deoplete.nvim
             pytest --junitxml=test-results/pytest/results.xml
 
       - store_artifacts:
