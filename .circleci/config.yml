@@ -33,6 +33,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz | sudo tar xfz - --strip-components=1 -C '/usr/local'
             git clone https://github.com/Shougo/deoplete.nvim
 
       - save_cache:
