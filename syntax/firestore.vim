@@ -191,7 +191,7 @@ syn match firestoreOpUnary /!/ nextgroup=@firestoreExpression,firestoreParenthes
 syn cluster firestorePathOp contains=firestoreOpKeywords,firestoreOpArithmetics
 " }}}
 
-syn keyword firestoreType bool duration float integer latlng list map number path string timestamp nextgroup=@firestoreOp skipwhite skipnl contained
+syn keyword firestoreType bool duration float integer latlng list map number path string timestamp nextgroup=@firestoreOp,firestoreComment skipwhite skipnl contained
 hi def link firestoreType Type
 " }}}
 
