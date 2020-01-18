@@ -12,7 +12,13 @@ if s:vim_firestore_warnings
 endif
 
 " Global {{{
-syntax match firestoreService /\%^\_s*service/ nextgroup=firestoreCloudFirestore skipwhite skipnl
+syntax match firestoreRulesVersion /\%^\_s*rules_version/ nextgroup=firestoreOpRulesVersion skipwhite
+hi def link firestoreRulesVersion Statement
+
+syn keyword firestoreOpRulesVersion = nextgroup=firestoreRulesVersionString skipwhite
+syn match firestoreRulesVersionString /\(['"]\)\d\+\1/ nextgroup=firestoreMatchSemicolon skipwhite
+
+syntax match firestoreService /^\_s*service/ nextgroup=firestoreCloudFirestore skipwhite skipnl
 hi def link firestoreService Statement
 
 syntax match firestoreCloudFirestore +cloud\.firestore+ nextgroup=firestoreDeclaration skipwhite skipnl
@@ -62,7 +68,7 @@ hi def link firestoreMatchPathDocumentAllInternal Label
 
 syn cluster firestoreMatchBlockStatement contains=firestoreFunction,firestoreAllow,firestoreComment,firestoreMatchSemicolon
 
-syn region firestoreMatchBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreMatch,firestoreFunction,@firestoreMatchBlockStatement,@firestoreSyntaxError contained
+syn region firestoreMatchBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreMatch,firestoreFunction,firestoreComment,@firestoreMatchBlockStatement,@firestoreSyntaxError contained
 
 syn match firestoreMatchSemicolon /;/ nextgroup=@firestoreMatchBlockStatement skipwhite skipnl contained
 
@@ -173,7 +179,7 @@ syn region firestoreMethodCall matchgroup=firestoreParens start=/(/ end=/)/ cont
 " }}}
 
 " Op {{{
-syn cluster firestoreOp contains=firestoreOpKeywords,firestoreOpArithmetics,firestoreOpSlash
+syn cluster firestoreOp contains=firestoreOpKeywords,firestoreOpArithmetics,firestoreOpSlash,firestoreOpRulesVersion
 
 syn keyword firestoreOpKeywords is nextgroup=firestoreType skipwhite skipnl containedin=@firestoreOp
 syn keyword firestoreOpKeywords in nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
@@ -196,7 +202,7 @@ hi def link firestoreType Type
 " }}}
 
 " Comment {{{
-syn match firestoreComment +//.*+ nextgroup=@firestoreValue,firestoreParentheses,firestoreOpUnary,@firestoreMatchBlockStatement,@firestoreOp skipwhite skipnl contains=@Spell,firestoreTodo
+syn match firestoreComment +//.*+ nextgroup=@firestoreValue,firestoreMatch,firestoreParentheses,firestoreOpUnary,@firestoreMatchBlockStatement,@firestoreOp skipwhite skipnl contains=@Spell,firestoreTodo
 hi def link firestoreComment Comment
 
 syn keyword firestoreTodo TODO FIXME XXX BUG containedin=firestoreComment
