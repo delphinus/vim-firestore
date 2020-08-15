@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead firestore.rules set filetype=firestore
+autocmd BufNewFile,BufRead *.rules set filetype=firestore
