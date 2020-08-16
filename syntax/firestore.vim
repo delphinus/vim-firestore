@@ -39,7 +39,7 @@ hi def link firestoreFunctionCallSignature PreProc
 
 syn match firestoreFunctionComma /,/ containedin=firestoreFunctionCallSignature
 
-syn region firestoreFunctionBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreStatement,@firestoreSyntaxError containedin=firestoreFunction keepend
+syn region firestoreFunctionBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreStatement,firestoreComment,@firestoreSyntaxError containedin=firestoreFunction keepend
 
 syn keyword firestoreStatement return nextgroup=@firestoreExpression skipwhite skipnl containedin=firestoreFunctionBlock
 hi def link firestoreStatement Statement
