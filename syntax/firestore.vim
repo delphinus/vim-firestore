@@ -39,7 +39,10 @@ hi def link firestoreFunctionCallSignature PreProc
 
 syn match firestoreFunctionComma /,/ containedin=firestoreFunctionCallSignature
 
-syn region firestoreFunctionBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreStatement,firestoreComment,@firestoreSyntaxError containedin=firestoreFunction keepend
+syn region firestoreFunctionBlock matchgroup=firestoreParens start=/{/ end=/}/ contains=firestoreLet,firestoreStatement,firestoreComment,@firestoreSyntaxError containedin=firestoreFunction keepend
+
+syn keyword firestoreLet let nextgroup=@firestoreExpression skipwhite containedin=firestoreFunctionBlock
+hi def link firestoreLet Keyword
 
 syn keyword firestoreStatement return nextgroup=@firestoreExpression skipwhite skipnl containedin=firestoreFunctionBlock
 hi def link firestoreStatement Statement
@@ -202,7 +205,7 @@ hi def link firestoreType Type
 " }}}
 
 " Comment {{{
-syn match firestoreComment +//.*+ nextgroup=firestoreStatement,firestoreMatch,firestoreParentheses,firestoreOpUnary,@firestoreValue,@firestoreMatchBlockStatement,@firestoreOp skipwhite skipnl contains=@Spell,firestoreTodo
+syn match firestoreComment +//.*+ nextgroup=firestoreLet,firestoreStatement,firestoreMatch,firestoreParentheses,firestoreOpUnary,@firestoreValue,@firestoreMatchBlockStatement,@firestoreOp skipwhite skipnl contains=@Spell,firestoreTodo
 hi def link firestoreComment Comment
 
 syn keyword firestoreTodo TODO FIXME XXX BUG containedin=firestoreComment
