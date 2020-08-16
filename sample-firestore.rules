@@ -1,7 +1,11 @@
+rules_version = '2'
+
 service cloud.firestore {
   // User defined functions
   function authed(uid) {
-    return request.auth != null && request.auth.uid == uid
+    // `let` variable definition
+    let hasAuth = request.auth != null
+    return hasAuth && request.auth.uid == uid
   }
 
   // match statement
@@ -14,8 +18,8 @@ service cloud.firestore {
 
     // nested match statement
     match /users/{document=**} {
-      // access control statement
-      allow read: if authed(uid)
+      // semicolon also available
+      allow read: if authed(uid);
       // multi conditions
       allow create: if authed(uid) && data().age > 0
       // methods
