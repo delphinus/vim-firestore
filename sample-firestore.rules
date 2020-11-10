@@ -39,6 +39,11 @@ service cloud.firestore {
       // path binding
       allow update: if (/path/$(foo)/$(bar)).bind({'foo': 'bar', 'bar': 'foo'})
     }
+
+    // collection groups
+    match /{path=**}/foo/{uid} {
+      allow read: if authed(uid);
+    }
   }
 }
 

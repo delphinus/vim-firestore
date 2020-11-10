@@ -53,7 +53,7 @@ hi def link firestoreStatement Statement
 syn keyword firestoreMatch match nextgroup=@firestoreMatchPath skipwhite skipnl containedin=firestoreDeclaration
 hi def link firestoreMatch Keyword
 
-syn cluster firestoreMatchPath contains=firestoreMatchPathConstant,firestoreMatchPathInterpolation,firestoreMatchPathDocumentAll
+syn cluster firestoreMatchPath contains=firestoreMatchPathConstant,firestoreMatchPathInterpolation,firestoreMatchPathRecursive
 
 syn match firestoreMatchPathConstant +/[-_0-9a-zA-Z]\+\>+ nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl containedin=firestoreMatch
 hi def link firestoreMatchPathConstant String
@@ -64,11 +64,11 @@ hi def link firestoreMatchPathInterpolation String
 syn match firestoreMatchPathVariable /{[-_0-9a-zA-Z]\+}/ containedin=firestoreMatchPathInterpolation keepend
 hi def link firestoreMatchPathVariable Label
 
-syn match firestoreMatchPathDocumentAll "/{\(document\|sub\)=\*\*}" nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl contains=firestoreMatchPathDocumentAllInternal containedin=firestoreMatch
-hi def link firestoreMatchPathDocumentAll String
+syn match firestoreMatchPathRecursive "/{[-_0-9a-zA-Z]\+=\*\*}" nextgroup=@firestoreMatchPath,firestoreMatchBlock skipwhite skipnl contains=firestoreMatchPathRecursiveInternal containedin=firestoreMatch
+hi def link firestoreMatchPathRecursive String
 
-syn match firestoreMatchPathDocumentAllInternal /{\(document\|sub\)=\*\*}/ containedin=firestoreMatchPathDocumentAll keepend
-hi def link firestoreMatchPathDocumentAllInternal Label
+syn match firestoreMatchPathRecursiveInternal /{[-_0-9a-zA-Z]\+=\*\*}/ containedin=firestoreMatchPathRecursive keepend
+hi def link firestoreMatchPathRecursiveInternal Label
 
 syn cluster firestoreMatchBlockStatement contains=firestoreFunction,firestoreAllow,firestoreComment,firestoreMatchSemicolon
 
