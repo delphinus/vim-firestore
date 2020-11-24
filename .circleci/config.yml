@@ -33,6 +33,8 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz | sudo tar xfz - --strip-components=1 -C '/usr/local'
+            git clone https://github.com/Shougo/deoplete.nvim
 
       - save_cache:
           paths:
@@ -48,7 +50,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            git clone https://github.com/Shougo/deoplete.nvim
+            cp test/base.py rplugin/python3/deoplete/sources
             pytest --junitxml=test-results/pytest/results.xml
 
       - store_artifacts:

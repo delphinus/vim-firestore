@@ -169,3 +169,7 @@ Temporary Items
 .apdisk
 
 
+### custom rules
+/deoplete.nvim
+# This file is for tests only.  Link or copy test/base.py into this to test
+/rplugin/python3/deoplete/sources/base.py
