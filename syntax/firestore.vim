@@ -25,6 +25,9 @@ hi def link firestoreService Statement
 syntax match firestoreCloudFirestore +cloud\.firestore+ nextgroup=firestoreDeclaration skipwhite skipnl
 hi def link firestoreCloudFirestore Keyword
 
+syntax match firebaseStorage +firebase\.storage+ nextgroup=firestoreDeclaration skipwhite skipnl
+hi def link firebaseStorage Keyword
+
 syn region firestoreDeclaration matchgroup=firestoreBraces start=/{/ end=/}\_s*\%$/ contains=firestoreFunction,firestoreMatch,firestoreComment,@firestoreSyntaxError
 " }}}
 
