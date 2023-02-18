@@ -97,7 +97,7 @@ syn cluster firestoreExpression contains=@firestoreValue,firestoreParentheses,fi
 
 syn cluster firestoreNextStatement contains=firestoreMethod,firestoreProperty,@firestoreOp,@firestoreMatchBlockStatement
 
-syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreNextStatement,firestoreSlice skipwhite skipnl contains=@firestoreExpression
+syn region firestoreParentheses matchgroup=firestoreParens start=/(/ end=/)/ nextgroup=@firestoreNextStatement,firestoreSlice skipwhite skipnl contains=@firestoreExpression,firestoreComment
 
 " Value {{{
 syn cluster firestoreValue contains=firestoreVariable,firestoreFunctionCall,@firestoreNumber,@firestorePath,firestoreString,firestoreList,firestoreMap,firestoreValueKeywords
