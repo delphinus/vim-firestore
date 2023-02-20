@@ -5,8 +5,6 @@ A plugin for [Firestore Security Rules][].
 [Firestore Security Rules]: https://firebase.google.com/docs/firestore/security/overview
 
 * [x] Syntax Highlighting
-* [x] Code completion
-  - (experimental)
 
 ## Install
 
