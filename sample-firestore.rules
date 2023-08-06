@@ -16,6 +16,13 @@ service cloud.firestore {
       return request.resource.data
     }
 
+    function isGroupMember(group, visibility) {
+      let membership = visibility == "adminsOnly"
+        ? /databases/$(db)/documents/admins/$(request.auth.uid)
+        : /databases/$(db)/documents/$(group)/$(request.auth.uid);
+      return exists(membership);
+    }
+
     // nested match statement
     match /users/{document=**} {
       // semicolon also available

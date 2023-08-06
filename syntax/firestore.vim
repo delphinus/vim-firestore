@@ -192,7 +192,7 @@ syn keyword firestoreOpKeywords is nextgroup=firestoreType skipwhite skipnl cont
 syn keyword firestoreOpKeywords in nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
 hi def link firestoreOpKeywords Operator
 
-syn match firestoreOpArithmetics ,[-+*%:]\|!!\|&&\|||\|[!=]==\?\|>=\|<=\|<<[<=]\?\|>>[>=]?\|[=!><|&], nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
+syn match firestoreOpArithmetics ,[-+*%?:]\|!!\|&&\|||\|[!=]==\?\|>=\|<=\|<<[<=]\?\|>>[>=]?\|[=!><|&], nextgroup=@firestoreExpression skipwhite skipnl containedin=@firestoreOp
 hi def link firestoreOpArithmetics Operator
 
 syn match firestoreOpSlash +/+ nextgroup=@firestoreExpression skipwhite skipnl contained
